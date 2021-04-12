@@ -1,26 +1,13 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Welcome to Firebase Hosting</title>
+    <title>COVID Vaccine Notifier</title>
 
-    <!-- update the version number as needed -->
     <script defer src="/__/firebase/8.3.3/firebase-app.js"></script>
-    <!-- include only the Firebase features as you need -->
     <script defer src="/__/firebase/8.3.3/firebase-auth.js"></script>
-    <script defer src="/__/firebase/8.3.3/firebase-database.js"></script>
-    <script defer src="/__/firebase/8.3.3/firebase-firestore.js"></script>
     <script defer src="/__/firebase/8.3.3/firebase-functions.js"></script>
-    <script defer src="/__/firebase/8.3.3/firebase-messaging.js"></script>
-    <script defer src="/__/firebase/8.3.3/firebase-storage.js"></script>
-    <script defer src="/__/firebase/8.3.3/firebase-analytics.js"></script>
-    <script defer src="/__/firebase/8.3.3/firebase-remote-config.js"></script>
-    <script defer src="/__/firebase/8.3.3/firebase-performance.js"></script>
-    <!-- 
-      initialize the SDK after all desired features are loaded, set useEmulator to false
-      to avoid connecting the SDK to running emulators.
-    -->
     <script defer src="/__/firebase/init.js?useEmulator=true"></script>
 
     <style media="screen">
@@ -29,9 +16,12 @@
       #message h2 { color: #ffa100; font-weight: bold; font-size: 16px; margin: 0 0 8px; }
       #message h1 { font-size: 22px; font-weight: 300; color: rgba(0,0,0,0.6); margin: 0 0 16px;}
       #message p { line-height: 140%; margin: 16px 0 24px; font-size: 14px; }
-      #message a { display: block; text-align: center; background: #039be5; text-transform: uppercase; text-decoration: none; color: white; padding: 16px; border-radius: 4px; }
+      #message p:last-child { margin-bottom: 16px; }
+      .btn { display: block; text-align: center; background: #039be5; text-transform: uppercase; text-decoration: none; color: white; padding: 16px; border-radius: 4px; width: 100% }
+      .btn:disabled { background: #6ec8f5 }
       #message, #message a { box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24); }
-      #load { color: rgba(0,0,0,0.4); text-align: center; font-size: 13px; }
+      footer { color: rgba(0,0,0,0.4); text-align: center; font-size: 13px; }
+      footer a { color: #039be5; }
       @media (max-width: 600px) {
         body, #message { margin-top: 0; background: white; box-shadow: none; }
         body { border-top: 16px solid #ffa100; }
@@ -40,50 +30,63 @@
   </head>
   <body>
     <div id="message">
-      <h2>Welcome</h2>
-      <h1>Firebase Hosting Setup Complete</h1>
-      <p>You're seeing this because you've successfully setup Firebase Hosting. Now it's time to go build something extraordinary!</p>
-      <a target="_blank" href="https://firebase.google.com/docs/hosting/">Open Hosting Documentation</a>
+      <h2>When are COVID vaccine appointments available?</h2>
+      <h1>Sign up for text notifications</h1>
+      <p>Put in your phone number and a few things to narrow it down, and let us do the rest!</p>
+      <form class="signup-form">
+        <fieldset>
+          <p>
+            <label for="state">State:</label>
+            <select id="state" name="state" required>
+              <option value="CA" selected>California
+              <option value="CO">Colorado
+            </select>
+            <small>(More states coming soon...)</small>
+          </p>
+          <p>
+            <label for="vaccine">Preferred vaccine type:</label>
+            <select id="vaccine" name="vaccine" required>
+              <option value="any" selected>(Any)
+              <option value="jj">Johnson &amp; Johnson
+              <option value="moderna">Moderna
+              <option value="pfizer">Pfizer
+            </select>
+          </p>
+          <p>
+            <label for="zip">Zipcode:</label>
+            <input id="zip" name="zip" required minlength="5" maxlength="5" size="5" pattern="\d*">
+          </p>
+          <p>
+            <label for="distance">Within distance:</label>
+            <select id="distance" name="distance" required data-type="number">
+              <option value="5" selected>5 miles
+              <option value="10">10 miles
+              <option value="25">25 miles
+              <option value="100">100 miles
+            </select>
+          </p>
+          <p>
+            <label for="threshold"># available slots:</label>
+            <input id="threshold" name="threshold" type="number" required size="2" min="1" max="99" value="3">
+            <br>
+            <small>
+              The number of available appointments at a spot before you want to be notified. (We recommend at least 3
+              since single appointments usually go too fast to actually grab them.)
+            </small>
+          </p>
+          <p>
+            <label for="phone">Your phone number:</label>
+            <input id="phone" name="phone" required minlength="10" maxlength="20" size="20">
+            <br>
+            <small>For text notifications related to availablity only. No spam, ever.</small>
+          </p>
+        </fieldset>
+        <br>
+        <button class="btn signup-button">Sign Up</button>
+        <p><small>By signing up, you agree to receive automated text messages regarding vaccine availablity to your phone number.</small></p>
+      </form>
     </div>
-    <p id="load">Firebase SDK Loading&hellip;</p>
-
-    <script>
-      document.addEventListener('DOMContentLoaded', function() {
-        const loadEl = document.querySelector('#load');
-        // // 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
-        // // The Firebase SDK is initialized and available here!
-        //
-        // firebase.auth().onAuthStateChanged(user => { });
-        // firebase.database().ref('/path/to/ref').on('value', snapshot => { });
-        // firebase.firestore().doc('/foo/bar').get().then(() => { });
-        // firebase.functions().httpsCallable('yourFunction')().then(() => { });
-        // firebase.messaging().requestPermission().then(() => { });
-        // firebase.storage().ref('/path/to/ref').getDownloadURL().then(() => { });
-        // firebase.analytics(); // call to activate
-        // firebase.analytics().logEvent('tutorial_completed');
-        // firebase.performance(); // call to activate
-        //
-        // // 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
-
-        try {
-          let app = firebase.app();
-          let features = [
-            'auth', 
-            'database', 
-            'firestore',
-            'functions',
-            'messaging', 
-            'storage', 
-            'analytics', 
-            'remoteConfig',
-            'performance',
-          ].filter(feature => typeof app[feature] === 'function');
-          loadEl.textContent = `Firebase SDK loaded with ${features.join(', ')}`;
-        } catch (e) {
-          console.error(e);
-          loadEl.textContent = 'Error loading the Firebase SDK, check the console.';
-        }
-      });
-    </script>
+    <footer>By <a href="https://github.com/kmcnellis">kmcnellis</a> and <a href="https://github.com/yuchenshi">yuchenshi</a>. Data provided by <a href="https://www.vaccinespotter.org/api/">vaccinespotter.org/api</a>.</footer>
+    <script src="index.js"></script>
   </body>
 </html>
