@@ -1,0 +1,15 @@
+{
+  "rules": {
+    "users":{
+      ".indexOn": ["phone","state"],
+      ".read": false,
+      ".write": false
+    },
+    "states":{
+      "$state":{
+        ".read": true,
+        ".write": false
+      }
+    }
+  }
+}

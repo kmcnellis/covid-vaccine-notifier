@@ -1,0 +1,43 @@
+{
+  "database": {
+    "rules": "database.rules.json"
+  },
+  "functions": {
+    "predeploy": [
+      "npm --prefix \"$RESOURCE_DIR\" run lint",
+      "npm --prefix \"$RESOURCE_DIR\" run build"
+    ]
+  },
+  "hosting": {
+    "public": "public",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+    "source": "/subscribe",
+    "function": "subscribe"
+    },
+    {
+    "source": "/unsubscribe",
+    "function": "unsubscribe"
+    }
+ ]
+  },
+  "emulators": {
+    "functions": {
+      "port": 5001
+    },
+    "database": {
+      "port": 9001
+    },
+    "hosting": {
+      "port": 6001
+    },
+    "ui": {
+      "enabled": true
+    }
+  }
+}
