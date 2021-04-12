@@ -9,11 +9,14 @@ import twilio = require("twilio");
 
 // Your Account SID from www.twilio.com/console
 const accountSid = functions.config().twilio.sid;
-// Your Auth Token from www.twilio.com/console
-const authToken = functions.config().twilio.token;
+// Your API Key from www.twilio.com/console
+const apiKey = functions.config().twilio.key;
+// Your API Secret from www.twilio.com/console
+const apiSecret = functions.config().twilio.secret;
 // Purchased phone number
 const twilioNumber = functions.config().twilio.phone;
-const twilioClient = twilio(accountSid, authToken, {
+const twilioClient = twilio(apiKey, apiSecret, {
+  accountSid: accountSid,
   lazyLoading: true,
 });
 

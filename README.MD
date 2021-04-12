@@ -16,7 +16,8 @@ curl --request POST -H "Content-Type:application/json"  -d '{"state": "<CO|CA>, 
 ```
 $ firebase use <project>
 $ firebase functions:config:set twilio.phone="<number purchased from twilio"
-$ firebase functions:config:set twilio.sid="<twilio sid>" twilio.token="<twilio token>"
+$ firebase functions:config:set twilio.sid="<twilio sid>"
+$ firebase functions:config:set twilio.key="<twilio api key>" twilio.secret="<twilio api secret>"
 $ firebase functions:config:set maps.key="<google maps geocode api key>"
 ```
 
