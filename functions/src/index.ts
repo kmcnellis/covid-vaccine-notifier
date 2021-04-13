@@ -32,8 +32,6 @@ const vaccines = ["moderna", "jj", "pfizer", "any"];
 
 const hostingURL = functions.config().hosting.url;
 const unsubscribeURL = `${hostingURL}/unsubscribe`;
-// const unsubscribeURL = ["http://localhost:5001/covid-spotter/us-central1/unsubscribe"]
-// const unsubscribeURL = ["https://covid-spotter.web.app/unsubscribe"];
 
 interface Providers {
   id: number;
@@ -216,6 +214,7 @@ exports.checkState = functions.database
         const url = pData.properties.url;
         const lastModified = new Date(pData.properties.appointments_last_modified).toLocaleString();
         const pr = notify(cData.phone, `Found ${numb} appointments for COVID vaccines ${types} at ${provider} ${address}, ${city}. ${dMiles} away.  Sign up at ${url}. ${lastModified}`);
+        console.log(`Sent vaccine notification to user ${child.key} ${JSON.stringify(pData.properties)}`);
 
         p.push(pr);
       });

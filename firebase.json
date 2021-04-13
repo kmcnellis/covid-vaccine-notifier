@@ -8,7 +8,8 @@
       "npm --prefix \"$RESOURCE_DIR\" run build"
     ]
   },
-  "hosting": {
+  "hosting": [{
+    "target": "main",
     "public": "public",
     "ignore": [
       "firebase.json",
@@ -24,8 +25,7 @@
     "source": "/unsubscribe",
     "function": "unsubscribe"
     }
- ]
-  },
+ ]}],
   "emulators": {
     "functions": {
       "port": 5001

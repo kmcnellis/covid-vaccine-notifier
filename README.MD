@@ -7,7 +7,7 @@ Currently only enabled for Colorado and California.
 
 ## Subscribe
 ```
-curl --request POST -H "Content-Type:application/json"  -d '{"state": "<CO|CA>, "vaccine":"any", "phone":"<PHONE NUMBER>", "distance":<DISTANCE IN MILES>,"zip":"<YOUR ZIP CODE", "threshold":<Apointements needed per location before notifying>}'   https://covid-spotter.web.app/subscribe
+curl --request POST -H "Content-Type:application/json"  -d '{"state": "<CO|CA>, "vaccine":"any", "phone":"<PHONE NUMBER>", "distance":<DISTANCE IN MILES>,"zip":"<YOUR ZIP CODE", "threshold":<Apointements needed per location before notifying>}'   https://vaccine-notifier.web.app/subscribe
 ```
 
 ## Run yourself
@@ -19,6 +19,7 @@ $ firebase functions:config:set twilio.phone="<number purchased from twilio"
 $ firebase functions:config:set twilio.sid="<twilio sid>"
 $ firebase functions:config:set twilio.key="<twilio api key>" twilio.secret="<twilio api secret>"
 $ firebase functions:config:set maps.key="<google maps geocode api key>"
+$ firebase target:apply hosting main <site-id>
 ```
 
 ### Local
