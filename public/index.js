@@ -29,12 +29,14 @@
     xhr.setRequestHeader("Content-Type", "application/json;charset=utf-8");
     xhr.onload = function () {
       if (xhr.status >= 200 && xhr.status < 300) {
-        console.log(xhr.responseText);
-        alert(xhr.responseText);
+        var message = xhr.responseText;
+        console.log(message);
+        alert(message);
         signUpButton.disabled = false;
       } else {
         // HTTP error
-        console.error(xhr.responseText);
+        var message = xhr.responseText;
+        console.error(message);
         alert(message);
         signUpButton.disabled = false;
       }
@@ -45,7 +47,6 @@
       alert(message);
       signUpButton.disabled = false;
     };
-    // {state": "CA", "vaccine":"jj", "phone":"+1 (555) 555-5555", "distance":15, "zip":"94110", "threshold":3}
     xhr.send(JSON.stringify(reqBody));
   }, false)
 })();
