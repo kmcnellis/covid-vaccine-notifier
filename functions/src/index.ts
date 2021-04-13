@@ -213,7 +213,7 @@ exports.checkState = functions.database
         const city = pData.properties.city;
         const url = pData.properties.url;
         const lastModified = new Date(pData.properties.appointments_last_modified).toLocaleString();
-        const pr = notify(cData.phone, `Found ${numb} appointments for COVID vaccines ${types} at ${provider} ${address}, ${city}. ${dMiles} away.  Sign up at ${url}. ${lastModified}`);
+        const pr = notify(cData.phone, `Found ${numb} appointments for COVID vaccines ${types} at ${provider} ${address}, ${city}. ${dMiles} mile(s) away.  Sign up at ${url}. ${lastModified}`);
         console.log(`Sent vaccine notification to user ${child.key} ${JSON.stringify(pData.properties)}`);
 
         p.push(pr);
@@ -249,13 +249,13 @@ exports.subscribe = functions.https.onRequest(async (req: functions.Request, res
   }
   const [p] = phone(req.body.phone, "USA");
   if (!p) {
-    return res.status(status.PRECONDITION_FAILED).send(`Invalid US phone number: ${JSON.stringify(req.body.phone)} (${p})`);
+    return res.status(status.PRECONDITION_FAILED).send(`Invalid US phone number: ${JSON.stringify(req.body.phone)}`);
   }
 
   let coordinates: Coordinates;
   if ("coordinates" in req.body) {
     if (req.body.coordinates.length !== 2) {
-      return res.status(status.PRECONDITION_FAILED).send(`Invalid coordinates: ${req.body.coordinates}`);
+      return res.status(status.PRECONDITION_FAILED).send(`Invalid coordinates: ${JSON.stringify(req.body.coordinates)}`);
     }
     coordinates = {latitude: req.body.coordinates[0], longitude: req.body.coordinates[1]};
   } else if ("zip" in req.body) {
