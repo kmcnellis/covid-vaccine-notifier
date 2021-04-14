@@ -3,6 +3,7 @@ covid-spotter/
 .firebaserc
 functions/.runtimeconfig.json
 .runtimeconfig
+.runtimeconfig.json
 
 # Compiled JavaScript files
 functions/lib/**/*.js

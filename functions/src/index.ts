@@ -224,6 +224,7 @@ exports.checkState = functions.database
 
 
 exports.subscribe = functions.https.onRequest(async (req: functions.Request, res: functions.Response): Promise<any> => {
+  console.log(req.get('host'))
   const ref = db.ref("users");
   if (!("state" in req.body)) {
     return res.status(status.PRECONDITION_FAILED).send(`Missing state: ${JSON.stringify(req.body)}`);
@@ -298,6 +299,8 @@ exports.subscribe = functions.https.onRequest(async (req: functions.Request, res
   await uRef.set(s);
 
   await notify(p, `You've successfully subscribed to covid notifications for the COVID19 vaccine (${req.body.vaccine} brand) in ${req.body.state}. Unsubscribe at any time at ${unsubscribeURL}?uid=${uRef.key}`);
+  console.log(req.hostname, req.url);
+  console.log(`${unsubscribeURL}?uid=${uRef.key}`)
   return res.send(`subscribed id ${uRef.key} : ${JSON.stringify(s)}`);
 });
 
@@ -316,7 +319,16 @@ exports.unsubscribe = functions.https.onRequest(async (req: functions.Request, r
   const uRef = ref.child(String(uid));
   const existing = await uRef.once("value");
   if (existing.val() == null) {
-    return res.send("no subscription found");
+    return res.status(404).send("no subscription found");
+  }
+  if (req.method !== 'POST') {
+    return res.status(200).set('Content-Type', 'text/html').send(`
+<!DOCTYPE html>
+<meta charset="utf-8">
+<title>Confirm Unsubscription</title>
+<h1>Don't want notification anymore?</h1>
+<form method="POST"><button>Unsubscribe me</button></form>
+`);
   }
   await uRef.remove();
 
